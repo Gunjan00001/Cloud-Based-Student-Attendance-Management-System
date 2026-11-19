@@ -1,0 +1,12 @@
+# Old standalone demo package — not part of this repository
+"Class_Register_Source (1)"
+
+node_modules/
+.next/
+.pglite-data/
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
