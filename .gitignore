@@ -1,6 +1,9 @@
 # Old standalone demo package — not part of this repository
 "Class_Register_Source (1)"
 
+# Unrelated local slide deck work
+ppt/
+
 node_modules/
 .next/
 .pglite-data/
