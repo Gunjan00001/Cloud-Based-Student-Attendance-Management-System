@@ -4,6 +4,9 @@
 # Unrelated local slide deck work
 ppt/
 
+# Unrelated local report generator
+report/
+
 node_modules/
 .next/
 .pglite-data/
