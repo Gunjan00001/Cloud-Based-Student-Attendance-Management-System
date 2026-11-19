@@ -295,13 +295,24 @@ Course shape:
       "attendancePercent": 83.3
     }
   ],
+  "trend": [
+    { "sessionId": "uuid", "startsAt": "2026-11-01T09:30:00.000Z", "present": 41, "absent": 1 }
+  ],
   "dataAsOf": "2026-11-20T10:06:12.000Z",
   "replicaLagMs": 420
 }
 ```
 
-- **Rules:** only saved sessions count. A student's denominator is the number of saved sessions inside their enrollment window. Zero counted sessions returns `attendancePercent: null`.
+- **Rules:** only saved sessions count. A student's denominator is the number of saved sessions inside their enrollment window. Zero counted sessions returns `attendancePercent: null`. `trend` lists every saved session oldest first with present/absent counts; the per-session percentage is `present / (present + absent)`.
 - **Notes:** the UI displays `dataAsOf`; it must not claim the report is live.
+
+#### `GET /api/reports/institution`
+
+- **Roles:** admin.
+- **Database:** replica.
+- **Rate limit:** `report.read.user`.
+- **Response:** role/user counts, course counts (total/archived), institution-wide present/absent totals across saved sessions, and a per-course breakdown (`id`, `code`, `savedSessions`, `present`, `absent`), plus `dataAsOf` and `replicaLagMs`.
+- **Errors:** `403 FORBIDDEN` for non-admins.
 
 ### 5.8 Admin users
 

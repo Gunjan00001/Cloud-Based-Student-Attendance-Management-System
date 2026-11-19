@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff; font-family: Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; padding: 32pt 56pt;
+}
+.overline { color: #1d4ed8; font-size: 10pt; font-weight: bold; letter-spacing: 2pt; margin: 0 0 6pt 0; }
+h1 { color: #0a0a0a; font-size: 26pt; margin: 0 0 22pt 0; }
+.stats { display: flex; gap: 14pt; margin-bottom: 18pt; }
+.stat { flex: 1; border: 1pt solid #e4e4e7; border-radius: 10pt; padding: 14pt 14pt 12pt 14pt; background: #f8fafc; border-top: 4pt solid #1d4ed8; }
+.stat h2 { margin: 0; color: #1d4ed8; font-size: 22pt; }
+.stat p { margin: 4pt 0 0 0; color: #52525b; font-size: 9.5pt; }
+.cols { display: flex; gap: 16pt; flex: 1; }
+.col { flex: 1; }
+.card { border: 1pt solid #e4e4e7; border-radius: 10pt; padding: 14pt 16pt; background: #ffffff; }
+.card h2 { color: #0a0a0a; font-size: 11.5pt; margin: 0 0 8pt 0; }
+.card ul { margin: 0; padding-left: 14pt; color: #52525b; font-size: 9.5pt; line-height: 1.55; }
+.card ul b { color: #1d4ed8; }
+</style>
+</head>
+<body>
+  <p class="overline">TARGETS &amp; STATUS</p>
+  <h1>Built, verified, and ready to deploy</h1>
+  <div class="stats">
+    <div class="stat"><h2>5,000</h2><p>users &#183; 300 courses &#183; 100k records / term</p></div>
+    <div class="stat"><h2>99.9%</h2><p>monthly availability target</p></div>
+    <div class="stat"><h2>&lt;400ms</h2><p>p95 replica read latency (&lt;800ms writes)</p></div>
+    <div class="stat"><h2>0</h2><p>lost attendance writes acknowledged 200</p></div>
+  </div>
+  <div class="cols">
+    <div class="col">
+      <div class="card">
+        <h2>Verification in place</h2>
+        <ul>
+          <li><b>Typecheck</b> — TypeScript strict</li>
+          <li><b>Unit tests</b> — percentage math, rate-limit identity, roster completeness</li>
+          <li><b>31-check E2E suite</b> — all-role auth, RBAC denials, save + version-conflict flows, reports, admin CRUD</li>
+          <li><b>Accessibility</b> — keyboard-only roll call, visible focus, screen-reader labels, reduced motion</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h2>Status</h2>
+        <ul>
+          <li>All six rollout phases implemented: design, foundation, administration, attendance, student view + reports, hardening</li>
+          <li>One-command demo: <span style="font-family: Courier New, monospace;">PGLITE=1 npm start</span></li>
+          <li>Real topology via Docker Compose: app + Postgres primary + hot-standby replica + migrations + seed</li>
+          <li>Production reference: Vercel + Supabase + Upstash</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

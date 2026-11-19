@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here. Versions follow semantic versioning: `MAJOR.MINOR.PATCH` (major = breaking change, minor = new feature, patch = bug fix).
 
+## [1.1.0] - 2026-11-20
+
+### Added
+- Analytics with charts for every role: institution overview (user counts by role, overall attendance donut, per-course attendance bars) for admins; class-by-class trend line, present/absent donut, and per-student bars for teachers; overall donut plus per-course bars for students
+- `GET /api/reports/institution` (admin, replica) for institution-wide aggregates
+- The course report now includes a per-session `trend` array for charting
+- Dependency-free SVG chart components (donut, bar list, trend line) in the white/black/blue design tokens
+
 ## [1.0.0] - 2026-11-20
 
 First complete release: design contract plus working implementation.

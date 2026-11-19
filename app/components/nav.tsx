@@ -10,7 +10,11 @@ type NavItem = { href: string; label: string };
 
 export function Nav({ user }: { user: SessionUser }) {
   const pathname = usePathname();
-  const items: NavItem[] = [{ href: "/dashboard", label: "Dashboard" }, { href: "/courses", label: "Courses" }];
+  const items: NavItem[] = [
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/courses", label: "Courses" },
+    { href: "/analytics", label: "Analytics" },
+  ];
   if (user.role === "student") items.push({ href: "/students/me", label: "My attendance" });
   if (user.role === "teacher" || user.role === "admin") items.push({ href: "/reports", label: "Reports" });
   if (user.role === "admin") {

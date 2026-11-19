@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff; font-family: Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; padding: 32pt 56pt;
+}
+.overline { color: #1d4ed8; font-size: 10pt; font-weight: bold; letter-spacing: 2pt; margin: 0 0 6pt 0; }
+h1 { color: #0a0a0a; font-size: 26pt; margin: 0 0 22pt 0; }
+.cols { display: flex; gap: 20pt; flex: 1; }
+.col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.card { border: 1pt solid #e4e4e7; border-radius: 10pt; padding: 16pt 18pt; background: #ffffff; }
+.card h2 { color: #0a0a0a; font-size: 12.5pt; margin: 0 0 8pt 0; }
+.card ul { margin: 0; padding-left: 14pt; color: #52525b; font-size: 10pt; line-height: 1.5; }
+.accent { border-top: 4pt solid #1d4ed8; }
+.dark { background: #0a0a0a; border: 1pt solid #0a0a0a; }
+.dark h2 { color: #ffffff; }
+.dark p { color: #d4d4d8; font-size: 10pt; line-height: 1.5; margin: 0; }
+.dark p b { color: #dbeafe; }
+.gap { height: 14pt; }
+</style>
+</head>
+<body>
+  <p class="overline">OVERVIEW</p>
+  <h1>Replace the paper register with a shared, cloud-backed one</h1>
+  <div class="cols">
+    <div class="col">
+      <div class="card accent">
+        <h2>What it does</h2>
+        <ul>
+          <li>Admins provision users, courses, and enrollments — no public signup</li>
+          <li>Teachers take a fast present/absent roll call on laptop or phone</li>
+          <li>Students check only their own attendance record</li>
+          <li>Course summaries and percentages for teachers and admins</li>
+          <li>Server-side rate limits on login, writes, and reports</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card dark">
+        <h2>The core idea: split write and read paths</h2>
+        <p><b>Primary (Supabase Postgres)</b> — owns every write, login lookups, and consistency-sensitive reads.</p>
+        <p style="margin-top:8pt;"><b>Read replica</b> — asynchronous, read-only. Serves lists, rosters, histories, and reports. Never a failover target.</p>
+      </div>
+      <div class="gap"></div>
+      <div class="card">
+        <h2>Deliberately out of scope</h2>
+        <ul>
+          <li>No QR / biometric / self check-in — avoids proxy check-ins</li>
+          <li>No offline mode, parent portal, multi-tenancy, native apps</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

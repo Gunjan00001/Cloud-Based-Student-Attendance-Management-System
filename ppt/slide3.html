@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff; font-family: Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; padding: 32pt 56pt;
+}
+.overline { color: #1d4ed8; font-size: 10pt; font-weight: bold; letter-spacing: 2pt; margin: 0 0 6pt 0; }
+h1 { color: #0a0a0a; font-size: 26pt; margin: 0 0 24pt 0; }
+.cols { display: flex; gap: 16pt; flex: 1; }
+.col { flex: 1; display: flex; flex-direction: column; }
+.card { border: 1pt solid #e4e4e7; border-radius: 10pt; padding: 18pt 18pt; background: #f8fafc; flex: 1; }
+.role { display: flex; align-items: center; margin: 0 0 10pt 0; }
+.dot { width: 26pt; height: 26pt; border-radius: 6pt; background: #1d4ed8; display: flex; align-items: center; justify-content: center; margin-right: 8pt; }
+.dot p { margin: 0; color: #ffffff; font-size: 12pt; font-weight: bold; }
+.dotg { background: #0a0a0a; }
+.card h2 { color: #0a0a0a; font-size: 13pt; margin: 0; }
+.card ul { margin: 0; padding-left: 14pt; color: #52525b; font-size: 10pt; line-height: 1.6; }
+.badge { border: 1pt solid #dbeafe; background: #dbeafe; border-radius: 5pt; padding: 3pt 8pt; margin-top: 12pt; display: inline-block; }
+.badge p { margin: 0; color: #1d4ed8; font-size: 8.5pt; font-weight: bold; }
+.note { margin-top: 16pt; border-left: 4pt solid #1d4ed8; background: #f8fafc; padding: 10pt 14pt; border-radius: 0 8pt 8pt 0; }
+.note p { margin: 0; color: #52525b; font-size: 10pt; }
+.note p b { color: #0a0a0a; }
+</style>
+</head>
+<body>
+  <p class="overline">USERS &amp; PERMISSIONS</p>
+  <h1>Three roles, enforced server-side</h1>
+  <div class="cols">
+    <div class="col">
+      <div class="card">
+        <div class="role"><div class="dot"><p>A</p></div><h2>Admin</h2></div>
+        <ul>
+          <li>Manage users, courses, enrollments</li>
+          <li>Create sessions for any course</li>
+          <li>View all reports and any student's record</li>
+          <li>View the audit log</li>
+        </ul>
+        <div class="badge"><p>DEACTIVATES ACCOUNTS</p></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="role"><div class="dot dotg"><p>T</p></div><h2>Teacher</h2></div>
+        <ul>
+          <li>See only assigned courses</li>
+          <li>Create and edit sessions for own courses</li>
+          <li>Mark attendance (present/absent roll call)</li>
+          <li>View own-course reports</li>
+        </ul>
+        <div class="badge"><p>NO MARKING RIGHTS ELSEWHERE</p></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="role"><div class="dot"><p>S</p></div><h2>Student</h2></div>
+        <ul>
+          <li>See only enrolled courses</li>
+          <li>View own attendance history only</li>
+          <li>No write access anywhere</li>
+        </ul>
+        <div class="badge"><p>OWN RECORD ONLY</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="note">
+    <p><b>UI hiding is not authorization.</b> Every query is scoped by the authenticated user's role and relationships in the server service layer.</p>
+  </div>
+</body>
+</html>

@@ -58,6 +58,17 @@ export type ReportResponse = {
   courseId: string;
   savedSessions: number;
   students: ReportStudent[];
+  // Per saved session, oldest first: marked = present + absent.
+  trend: Array<{ sessionId: string; startsAt: string; present: number; absent: number }>;
+  dataAsOf: string;
+  replicaLagMs: number | null;
+};
+
+export type InstitutionAnalytics = {
+  users: { admins: number; teachers: number; students: number; activeUsers: number };
+  courses: { total: number; archived: number };
+  attendance: { savedSessions: number; present: number; absent: number };
+  perCourse: Array<{ id: string; code: string; savedSessions: number; present: number; absent: number }>;
   dataAsOf: string;
   replicaLagMs: number | null;
 };

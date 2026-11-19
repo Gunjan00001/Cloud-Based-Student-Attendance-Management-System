@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #ffffff; font-family: Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; padding: 32pt 56pt;
+}
+.overline { color: #1d4ed8; font-size: 10pt; font-weight: bold; letter-spacing: 2pt; margin: 0 0 6pt 0; }
+h1 { color: #0a0a0a; font-size: 26pt; margin: 0 0 20pt 0; }
+.cols { display: flex; gap: 20pt; flex: 1; }
+.col { flex: 1; display: flex; flex-direction: column; }
+.card { border: 1pt solid #e4e4e7; border-radius: 10pt; padding: 16pt 18pt; background: #ffffff; }
+.card h2 { color: #0a0a0a; font-size: 12.5pt; margin: 0 0 10pt 0; }
+.row { display: flex; align-items: center; justify-content: space-between; border-bottom: 1pt solid #e4e4e7; padding: 5pt 0; }
+.row p { margin: 0; color: #52525b; font-size: 9.5pt; }
+.tag { border-radius: 4pt; padding: 2pt 8pt; }
+.tag p { margin: 0; font-size: 8pt; font-weight: bold; text-align: center; }
+.p { background: #dbeafe; }
+.p p { color: #1d4ed8; }
+.r { background: #0a0a0a; }
+.r p { color: #ffffff; }
+.dark { background: #0a0a0a; border: 1pt solid #0a0a0a; }
+.dark h2 { color: #ffffff; }
+.dark ul { margin: 0; padding-left: 14pt; }
+.dark li { color: #d4d4d8; font-size: 10pt; line-height: 1.6; }
+.dark li b { color: #dbeafe; }
+</style>
+</head>
+<body>
+  <p class="overline">MASTER / REPLICA</p>
+  <h1>Every operation has a declared database</h1>
+  <div class="cols">
+    <div class="col">
+      <div class="card">
+        <h2>Routing matrix</h2>
+        <div class="row"><p>Insert / update / delete</p><div class="tag p"><p>PRIMARY</p></div></div>
+        <div class="row"><p>Login user lookup</p><div class="tag p"><p>PRIMARY</p></div></div>
+        <div class="row"><p>Session edit (version)</p><div class="tag p"><p>PRIMARY</p></div></div>
+        <div class="row"><p>Course list &amp; detail</p><div class="tag r"><p>REPLICA</p></div></div>
+        <div class="row"><p>Roster / session history</p><div class="tag r"><p>REPLICA</p></div></div>
+        <div class="row"><p>Student history</p><div class="tag r"><p>REPLICA</p></div></div>
+        <div class="row"><p>Reports &amp; percentages</p><div class="tag r"><p>REPLICA</p></div></div>
+        <div class="row"><p>Audit log view</p><div class="tag r"><p>REPLICA</p></div></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card dark">
+        <h2>Consistency rules</h2>
+        <ul>
+          <li><b>Read-your-writes:</b> attendance save returns the canonical session from the primary</li>
+          <li><b>Lag is honest:</b> replica reads carry a <b>dataAsOf</b> timestamp</li>
+          <li><b>Never on the replica:</b> authorization, credential checks, edit-form version numbers</li>
+          <li><b>Lag &gt; 10s:</b> alert; &gt; 60s: circuit-break non-report reads to primary</li>
+          <li><b>Replica is not a backup</b> and never promoted on primary failure — writes just return 503</li>
+          <li><b>Pooling:</b> transaction-mode poolers, <b>prepare:false</b>, Drizzle migrations against primary only</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -158,6 +158,17 @@ const absentStudent = result.data?.students?.find((student) => student.rollNumbe
 check("report totals", result.status === 200 && result.data.savedSessions >= 2, JSON.stringify(result.data));
 check("absent student percent", absentStudent && absentStudent.attendancePercent < 100, JSON.stringify(absentStudent));
 check("report has dataAsOf", Boolean(result.data?.dataAsOf));
+check("report has trend", Array.isArray(result.data?.trend) && result.data.trend.length >= 1, JSON.stringify(result.data?.trend?.slice(0, 1)));
+
+result = await call(teacher, "/api/reports/institution");
+check("teacher blocked from institution analytics", result.status === 403, JSON.stringify(result.data));
+
+result = await call(admin, "/api/reports/institution");
+check(
+  "admin institution analytics",
+  result.status === 200 && result.data.users.students >= 6 && Array.isArray(result.data.perCourse),
+  JSON.stringify(result.data),
+);
 
 const student = new Jar();
 result = await login(student, "kabir@example.edu", "ChangeMe-Student-123");
@@ -165,6 +176,9 @@ check("student login", result.status === 200 || result.status === 302, `status $
 
 result = await call(student, "/api/students/me/attendance");
 check("student sees own summary", result.status === 200 && result.data.courses.length >= 1, JSON.stringify(result.data));
+
+result = await call(student, "/api/reports/institution");
+check("student blocked from institution analytics", result.status === 403, JSON.stringify(result.data));
 
 result = await call(student, `/api/courses/${courseId}/roster`);
 check("student blocked from roster", result.status === 403 || result.status === 404, JSON.stringify(result.data));

@@ -55,7 +55,20 @@ export const GET = withApi({ policy: "report.read.user", roles: ["admin", "teach
       ORDER BY u.full_name
     `));
 
-    return { savedSessions: Number(countRow?.saved_sessions ?? 0), rows };
+    const trend = rowsOf<{ id: string; starts_at: string; present: number; absent: number }>(await db.execute(sql`
+      SELECT
+        s.id,
+        s.starts_at,
+        count(ar.id) FILTER (WHERE ar.status = 'present')::int AS present,
+        count(ar.id) FILTER (WHERE ar.status = 'absent')::int AS absent
+      FROM attendance_sessions s
+      LEFT JOIN attendance_records ar ON ar.session_id = s.id
+      WHERE s.course_id = ${courseId} AND s.saved_at IS NOT NULL
+      GROUP BY s.id
+      ORDER BY s.starts_at
+    `));
+
+    return { savedSessions: Number(countRow?.saved_sessions ?? 0), rows, trend };
   });
 
   return readJson(
@@ -74,6 +87,12 @@ export const GET = withApi({ policy: "report.read.user", roles: ["admin", "teach
           attendancePercent: attendancePercent(presentSessions, countedSessions),
         };
       }),
+      trend: data.trend.map((row) => ({
+        sessionId: row.id,
+        startsAt: row.starts_at,
+        present: Number(row.present),
+        absent: Number(row.absent),
+      })),
       dataAsOf: meta.dataAsOf,
       replicaLagMs: meta.replicaLagMs,
     },
