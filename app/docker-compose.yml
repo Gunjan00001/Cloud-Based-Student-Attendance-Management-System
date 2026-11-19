@@ -1,0 +1,61 @@
+services:
+  db-primary:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rollcall
+    command: ["postgres", "-c", "hba_file=/etc/pg/pg_hba.conf"]
+    volumes:
+      - ./docker/primary-init.sql:/docker-entrypoint-initdb.d/10-replication-role.sql:ro
+      - ./docker/pg_hba.conf:/etc/pg/pg_hba.conf:ro
+      - primary-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rollcall"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  db-replica:
+    image: postgres:16-alpine
+    environment:
+      PGDATA: /var/lib/postgresql/data
+    entrypoint: ["/bin/sh", "/scripts/replica-entrypoint.sh"]
+    volumes:
+      - ./docker/replica-entrypoint.sh:/scripts/replica-entrypoint.sh:ro
+      - replica-data:/var/lib/postgresql/data
+    depends_on:
+      db-primary:
+        condition: service_healthy
+
+  migrate:
+    build: .
+    command: sh -c "npm run db:migrate && npm run db:seed"
+    environment:
+      DB_SSL: "false"
+      SEED_DEMO: "1"
+      MIGRATION_DATABASE_URL: postgres://postgres:postgres@db-primary:5432/rollcall
+      DATABASE_URL: postgres://postgres:postgres@db-primary:5432/rollcall
+    depends_on:
+      db-primary:
+        condition: service_healthy
+
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DB_SSL: "false"
+      DATABASE_URL: postgres://postgres:postgres@db-primary:5432/rollcall
+      DATABASE_REPLICA_URL: postgres://postgres:postgres@db-replica:5432/rollcall
+      AUTH_SECRET: dev-secret-change-me-in-production
+      AUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+    depends_on:
+      db-primary:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  primary-data:
+  replica-data:
